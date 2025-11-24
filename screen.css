@@ -1,3 +1,4 @@
+/* Keyframes voor de animatie van de fireball */
 @keyframes fireball {
 	0% {
 		transform: rotate(0);
@@ -7,30 +8,45 @@
 	}
 }
 
-body {
-	background-color: #000000;
-	background-image: url('images/background.png');
-	background-position: 0 center;
-	background-repeat: repeat-x;
-	box-sizing: border-box;
+/* Algemene stijlen voor de HTML en BODY om het hele scherm te vullen */
+html, body {
 	height: 100%;
-	margin: 0;
-	overflow: hidden;
-	padding: 0;
 	width: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden; /* Voorkomt scrollbalken als content buiten de viewport valt */
+	box-sizing: border-box; /* Zorgt ervoor dat padding en border binnen de breedte/hoogte vallen */
 }
 
+/* Stijlen voor de body (de hoofdcontainer) */
+body {
+	background-color: #000000; /* Zwart als fallback, maar de afbeelding zal het vullen */
+	background-image: url('images/background.png'); /* Je achtergrondafbeelding */
+	background-size: cover; /* Zorgt ervoor dat de achtergrond het hele element bedekt */
+	background-position: center bottom; /* Centreert de afbeelding en plaatst de onderkant op de onderkant van de body */
+	background-repeat: no-repeat; /* Voorkomt herhaling van de afbeelding */
+	position: relative; /* Belangrijk: Maakt de body de positioneringscontext voor absoluut gepositioneerde elementen */
+}
+
+/* Stijlen voor de fireball (Mario) */
 .fireball {
 	animation-delay: 0s;
 	animation-duration: 1s;
 	animation-iteration-count: infinite;
 	animation-name: fireball;
 	animation-timing-function: linear;
-	background-image: url('images/fireball.gif');
+	background-image: url('images/fireball.gif'); /* Je fireball GIF */
 	background-repeat: no-repeat;
-	background-size: 100% 100%;
+	background-size: contain; /* Zorgt ervoor dat de GIF volledig zichtbaar is binnen de breedte/hoogte van de fireball div */
+	position: absolute; /* Absolute positionering ten opzichte van de body */
+	bottom: 10%; /* Plaatst de onderkant van de fireball 10% van de onderkant van de body (pas dit aan indien nodig) */
+	left: 50%; /* Centreert de fireball horizontaal */
+	transform: translateX(-50%); /* Corrigeert de horizontale centrering */
+	width: 10vh; /* Breedte gebaseerd op de viewport hoogte (handig voor responsiviteit) */
+	height: 10vh; /* Hoogte gebaseerd op de viewport hoogte */
 }
 
+/* Stijlen voor de h1 (als je die nog gebruikt) */
 h1 {
 	align-items: center;
 	display: flex;
@@ -38,35 +54,40 @@ h1 {
 	justify-content: center;
 	height: 100%;
 	margin: 0;
+	color: white; /* Voor het geval je een tekst in h1 hebt */
 }
 
-html {
-	height: 100%;
-	width: 100%;
-}
-
+/* Stijlen voor tube (als je die nog gebruikt) */
 .tube {
-	background-repeat: no-repeat, repeat-y;
+	background-repeat: no-repeat, repeat-y; /* Deze regel lijkt niet compleet of wordt elders gedefinieerd */
 }
 
 /* ==========================================================
-   MEDIA QUERIES
+   media queries
    ========================================================== */
 
+/* Media query voor schermen met een maximale breedte van 768px */
 @media (max-width: 768px) {
     h1 {
-        font-size: 8vw;
+        font-size: 8vw; /* Lettergrootte gebaseerd op viewport breedte */
+    }
+    .fireball {
+        width: 12vw; /* Iets groter op kleinere schermen, pas aan naar wens */
+        height: 12vw;
+        bottom: 8%; /* Pas de positie van de fireball aan voor kleinere schermen */
     }
 }
 
+/* Media query voor liggende oriëntatie en maximale hoogte van 500px */
 @media (orientation: landscape) and (max-height: 500px) {
     
     h1 {
-        font-size: 5vh; 
+        font-size: 5vh; /* Lettergrootte gebaseerd op viewport hoogte */
     }
 
     .fireball {
-        width: 8vh; 
-        height: 8vh; 
+        width: 8vh; /* Breedte gebaseerd op viewport hoogte */
+        height: 8vh; /* Hoogte gebaseerd op viewport hoogte */
+        bottom: 5%; /* Pas de positie van de fireball aan voor liggende oriëntatie */
     }
 }
