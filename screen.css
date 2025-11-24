@@ -15,39 +15,50 @@ html, body {
 	margin: 0;
 	padding: 0;
 	overflow: hidden; /* Voorkomt scrollbalken */
-	box-sizing: border-box; 
+	box-sizing: border-box;
+    font-family: sans-serif; /* Een standaard lettertype voor alle tekst */
 }
 
 /* De body fungeert als de zwarte achtergrond voor de randen op brede schermen */
 body {
-	background-color: #000000; 
-	position: relative; 
+	background-color: #000000;
+	position: relative;
+    display: flex; /* Gebruik flexbox om de game-container te centreren */
+    justify-content: center; /* Centreer horizontaal */
+    align-items: center; /* Centreer verticaal */
 }
 
 /* NIEUW: De Game Container is de virtuele 'scène' die de achtergrond en Mario bevat */
 .game-container {
-    /* Zorgt ervoor dat de container het hele scherm vult */
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    /* De maximale grootte die de game-container mag aannemen */
+    max-width: 100vw; /* Maximaal de breedte van de viewport */
+    max-height: 100vh; /* Maximaal de hoogte van de viewport */
     
-    /* Zorgt voor centrering als de container niet de volledige breedte of hoogte gebruikt */
-    margin: auto; 
+    /* Bepaalt de afmetingen van de game-container.
+       Hier kiezen we voor een vaste 16:9 ratio, gebruik de ratio van je background.png.
+       Als je achtergrond bijv. 1920x1080 is, is dit (1080/1920 * 100) = 56.25%.
+       Dit is CRUCIAAL voor de juiste schaling van de container zelf. */
+    width: 100%; /* Begint met 100% breedte van de parent (body) */
+    padding-bottom: 56.25%; /* Voor een 16:9 ratio, past de hoogte hierop aan */
+    /* Alternative if you know the exact aspect ratio of your background image:
+    aspect-ratio: 16 / 9; */ /* Moderne browsers ondersteunen dit, vervang 16/9 door jouw ratio */
+
+    /* Zorgt ervoor dat de container zich schaalt op basis van het aspect ratio */
+    height: auto; 
     
-    /* De achtergrondafbeelding en positionering */
-    background-image: url('images/background.png'); 
-    background-size: contain; /* Zorgt ervoor dat de hele afbeelding schaalt en past (zonder uitrekken) */
+    /* Zorgt ervoor dat de container niet te groot wordt op brede schermen, 
+       maar wel de hoogte/breedte beperkt blijft. */
+    position: relative; /* Belangrijk voor positionering van kinderen */
+    overflow: hidden; /* Verbergt alles wat buiten de game-container valt */
+
+    /* De achtergrondafbeelding en positionering binnen DEZE container */
+    background-image: url('images/background.png');
+    background-size: cover; /* Gebruik 'cover' nu, want de container heeft de juiste aspect ratio */
     background-position: left bottom; /* Startpositie: links onderin (voor JavaScript beweging) */
-    background-repeat: no-repeat; 
+    background-repeat: no-repeat;
     
-    /* BELANGRIJK: Zorgt ervoor dat de container zich gedraagt als een referentiepunt */
-    position: relative; 
-    
-    /* Deze afmetingen zijn nodig zodat de achtergrond de beschikbare ruimte in de body kan vullen */
-    width: 100%;
-    height: 100%; 
+    /* Optioneel: Border voor debugging om te zien waar de container eindigt */
+    /* border: 2px solid red; */ 
 }
 
 /* Stijlen voor de fireball (Mario) */
@@ -67,17 +78,20 @@ body {
     /* Positionering t.o.v. .game-container */
 	position: absolute; 
 	
-	/* BELANGRIJK: Pas deze waarde aan (bijv. 8% of 12%) totdat Mario perfect 
-       op de grond van de achtergrondafbeelding staat. */
+	/* BELANGRIJK: Pas deze waarde aan totdat Mario perfect op de grond staat.
+       Deze percentages zijn nu relatief t.o.v. de HOOGTE van de .game-container. */
 	bottom: 10%; 
 	
     /* Mario start links op het scherm */
 	left: 20%;   
 	transform: translateX(-50%); 
 	
-	/* Grootte van de fireball */
-	width: 10vh; 
-	height: 10vh; 
+	/* Grootte van de fireball, nu in percentages van de container of vmin */
+	width: 8%; /* Percentage van de breedte van de game-container */
+	height: 12%; /* Percentage van de hoogte van de game-container */
+    /* Of: */
+    /* width: 8vmin;
+    height: 12vmin; */ /* vmin is handig om zowel op breedte als hoogte te schalen */
 }
 
 /* Stijlen voor de h1 (Loading tekst) */
@@ -87,33 +101,47 @@ h1 {
 	font-family: sans-serif;
 	justify-content: center;
 	height: 100%;
+	width: 100%; /* Zorg dat het de volledige breedte van de container vult */
 	margin: 0;
 	color: white; 
-	position: absolute; 
+	position: absolute; /* Absolute positie binnen de game-container */
 	top: 0;
 	left: 0;
-	width: 100%;
 	z-index: 10; 
+    font-size: 5vmin; /* Schaal de tekst mee met de kleinste viewport dimensie */
+    background-color: rgba(0, 0, 0, 0.7); /* Zorg dat het over de game heen ligt */
 }
 
-/* Stijlen voor tube (indien gebruikt) */
+/* Stijlen voor tube (indien gebruikt in je JavaScript) */
+/* Dit is een voorbeeld voor hoe je buizen zou kunnen stylen.
+   Je JavaScript zal waarschijnlijk individuele buis-elementen creëren. */
 .tube {
-	background-repeat: no-repeat, repeat-y; 
+    position: absolute;
+    bottom: 0; /* Zorgt ervoor dat de buizen op de grond staan */
+    width: 5%; /* Voorbeeld breedte */
+    height: 30%; /* Voorbeeld hoogte */
+    background-color: #008000; /* Groen */
+    /* Voeg hier stijlen toe voor de specifieke vorm van je buis (bijv. border-radius) */
+    /* Vooraf geladen afbeelding van een buis is beter: */
+    /* background-image: url('images/tube.png'); */
+    /* background-size: contain; */
+    /* background-repeat: no-repeat; */
 }
 
 /* ==========================================================
    media queries
    ========================================================== */
 
-/* Kleinere schermen/mobiel */
+/* Kleinere schermen/mobiel - Pas de Mario positie en grootte hier aan */
 @media (max-width: 768px) {
     h1 {
         font-size: 8vw; 
     }
     .fireball {
-        width: 12vw; 
-        height: 12vw;
+        width: 10%; /* Pas aan voor kleinere schermen */
+        height: 15%;
         bottom: 8%; /* Fijn afstellen voor mobiel */
+        left: 20%;
     }
 }
 
@@ -125,8 +153,9 @@ h1 {
     }
 
     .fireball {
-        width: 8vh; 
-        height: 8vh; 
-        bottom: 5%; /* Fijn afstellen voor landscape */
+        width: 8%; 
+        height: 12%; 
+        bottom: 5%; 
+        left: 20%;
     }
 }
