@@ -19,7 +19,7 @@ html, body {
     font-family: sans-serif;
 }
 
-/* Body: Zwarte achtergrond en centrering van de game-container */
+/* Body: Zwarte achtergrond en centrering */
 body {
 	background-color: #000000; 
 	position: relative;
@@ -34,7 +34,7 @@ body {
     max-width: 100vw; 
     max-height: 100vh; 
     
-    /* BELANGRIJK: De juiste aspect ratio op basis van 437/800 */
+    /* Correcte aspect ratio voor 800x437 */
     width: 100%; 
     padding-bottom: 54.625%; 
     height: auto; 
@@ -42,13 +42,13 @@ body {
     position: relative; 
     overflow: hidden; 
 
-    /* De achtergrondafbeelding vult nu de correct gevormde container */
+    /* De achtergrondafbeelding vult de container */
     background-image: url('images/background.png');
-    background-size: cover; /* Vult de container perfect op */
-    background-position: left bottom; /* Startpositie voor JavaScript beweging */
+    background-size: cover; 
+    background-position: left bottom; 
     background-repeat: no-repeat;
     
-    /* Optioneel, gebruik deze code om de exacte grenzen te zien */
+    /* Optioneel: border voor debugging */
     /* border: 1px solid red; */
 }
 
@@ -69,8 +69,7 @@ body {
     /* Positionering t.o.v. .game-container */
 	position: absolute; 
 	
-	/* Aangepaste bottom, moet nu nauwkeuriger zijn t.o.v. de grond. 
-       Pas deze (bijv. 8.5% of 9.5%) aan indien Mario niet perfect op de grond staat. */
+	/* Aangepaste bottom, pas aan indien Mario niet perfect op de grond staat. */
 	bottom: 9%; 
 	
     /* Mario start links op het scherm */
@@ -82,29 +81,40 @@ body {
 	height: 12%; 
 }
 
-/* Stijlen voor de h1 (Loading tekst) */
-h1 {
-	align-items: center;
-	display: flex;
+/* Stijlen voor de h1 (Loading tekst) - deze staat nu OP DE BODY, niet in de game-container */
+#loadingText {
+	display: flex; /* Zorgt ervoor dat de tekst gecentreerd kan worden */
+    justify-content: center; /* Horizontaal centreren */
+    align-items: center; /* Verticaal centreren */
 	font-family: sans-serif;
-	justify-content: center;
-	height: 100%;
-	width: 100%; 
-	margin: 0;
 	color: white; 
-	position: absolute; 
+	position: absolute; /* Absolute positie over het hele scherm */
 	top: 0;
 	left: 0;
-	z-index: 10; 
-    font-size: 5vmin; 
-    background-color: rgba(0, 0, 0, 0.7); 
+	width: 100%;
+    height: 100%; /* Vult de hele viewport */
+	z-index: 100; /* Zorgt ervoor dat het boven alles ligt */
+    background-color: #000; /* Volledig zwarte achtergrond voor de loading screen */
+    font-size: 5vmin; /* Schaal de tekst mee */
 }
 
 /* Stijlen voor tube (voorbeeld) */
+/* Je JavaScript zal waarschijnlijk individuele buis-elementen creëren en ze deze class geven */
 .tube {
     position: absolute;
-    bottom: 0; 
-    /* Voeg hier de gewenste breedte, hoogte en achtergrondstijlen toe */
+    bottom: 0; /* Zorgt ervoor dat de buizen op de grond staan */
+    width: 5%; /* Voorbeeld breedte relatief aan game-container */
+    height: 30%; /* Voorbeeld hoogte relatief aan game-container */
+    background-color: green; /* Voorbeeld kleur. Gebruik liever een afbeelding. */
+    /* background-image: url('images/tube.png'); */
+    /* background-size: contain; */
+    /* background-repeat: no-repeat; */
+    /* Verder positionering door JS (left property) */
+}
+
+/* Utility class om elementen te verbergen */
+.hidden {
+    display: none !important;
 }
 
 /* ==========================================================
@@ -113,7 +123,7 @@ h1 {
 
 /* Kleinere schermen/mobiel */
 @media (max-width: 768px) {
-    h1 {
+    #loadingText {
         font-size: 8vw; 
     }
     .fireball {
@@ -127,7 +137,7 @@ h1 {
 /* Liggende oriëntatie (landscape) met kleine hoogte */
 @media (orientation: landscape) and (max-height: 500px) {
     
-    h1 {
+    #loadingText {
         font-size: 5vh; 
     }
 
