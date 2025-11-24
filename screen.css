@@ -1,23 +1,57 @@
 /* ==========================================================
-   Basale Elementen: Zorgen voor Volledige Viewport Dekking
+   Basale Elementen & Centering
    ========================================================== */
 
-/* * CRUCIAAL voor responsiviteit: */
+/* Zorgt voor volledige viewport dekking en centrering */
 html, body {
-	height: 100vh; /* Gebruik vh (viewport height) */
-	width: 100vw;  /* Gebruik vw (viewport width) */
+	height: 100vh;
+	width: 100vw;
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	overflow: hidden; /* Voorkomt scrollen */
+	overflow: hidden; 
 }
 
 body {
 	background-color: #000000;
 	background-image: url('images/background.png');
-	background-size: cover; /* Laat de achtergrond de hele ruimte bedekken */
-	background-position: 0 center;
-	background-repeat: repeat-x;
+	background-size: cover; 
+	background-position: center center;
+	background-repeat: no-repeat; /* Gebruik 'no-repeat' of 'cover' voor een nette 'frame' look */
+	
+	/* Flexbox om de game-wrapper te centreren */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* De wrapper die de game-inhoud bevat (h1 of canvas) */
+#game-wrapper {
+	/* Dit is cruciaal voor schaling! Definieer de ideale desktop afmetingen
+	 * Bijvoorbeeld 800px breed en 600px hoog, of gebruik verhoudingen. */
+	width: 100%; /* Begin met 100% om schaling toe te staan */
+	max-width: 800px; /* Stel de max. breedte in op je desktop-breedte */
+	max-height: 600px; /* Stel de max. hoogte in op je desktop-hoogte */
+	
+	/* Zorg dat de hoogte wordt berekend op basis van de breedte (voor 4:3 verhouding, 75%) */
+	aspect-ratio: 4 / 3; /* Indien je een vaste verhouding wilt (bv. 800x600) */
+	
+	background-color: #333; /* Optioneel: Achtergrondkleur voor het 'frame' */
+}
+
+/* Zorg ervoor dat de 'Loading...' tekst de hele wrapper vult */
+h1 {
+	/* Gebruik de wrapper afmetingen */
+	height: 100%; 
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	font-family: sans-serif;
+	color: white; 
+	font-size: 5vw; /* Relatieve lettergrootte */
+	margin: 0;
 }
 
 /* ==========================================================
@@ -43,49 +77,28 @@ body {
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	
-	/* Relatieve grootte voor responsiviteit */
 	width: 10vw; 
 	height: 10vw; 
 }
 
-h1 {
-	/* Centreren van de tekst */
-	height: 100vh; 
-	width: 100vw;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	
-	font-family: sans-serif;
-	color: white; 
-	font-size: 8vw; /* Relatieve lettergrootte */
-	margin: 0;
-}
-
 .tube {
 	background-repeat: no-repeat, repeat-y;
-	width: 15vw; /* Relatieve breedte */
+	width: 15vw;
 }
 
 /* ==========================================================
-   Touch Controls Stijlen (Desktop verstoppen)
+   Touch Controls & Media Queries
    ========================================================== */
 
 #touch-controls {
-    /* Standaard verstoppen voor desktopgebruikers */
-    display: none; 
+    display: none; /* Standaard verstoppen */
 }
 
-
-/* ==========================================================
-   MEDIA QUERIES: Optimalisatie voor Mobiel (max-width: 768px)
-   ========================================================== */
 @media (max-width: 768px) {
-    
     /* 1. Touch Controls Laten Zien en Positioneren */
     #touch-controls {
-        display: flex; /* Laten zien op mobiel */
-        position: fixed; /* Bovenop de game-area */
+        display: flex; 
+        position: fixed; 
         bottom: 10px;
         left: 10px;
         right: 10px;
@@ -95,48 +108,30 @@ h1 {
     }
 
     #touch-controls button {
-        /* Stijl de knoppen voor goede touch-doelwitten */
         font-size: 1.8em;
         padding: 10px 18px;
-        background-color: rgba(50, 50, 50, 0.7); /* Semi-transparant */
+        background-color: rgba(50, 50, 50, 0.7); 
         color: white;
         border: 2px solid white;
         border-radius: 8px;
-        cursor: pointer;
         -webkit-user-select: none;
         user-select: none;
-        touch-action: manipulation; /* Verbeterd touch-gedrag */
-    }
-
-    /* 2. Game Elementen Schalen op Mobiel */
-    .fireball {
-        width: 12vw; 
-        height: 12vw; 
-    }
-    
-    .tube {
-        width: 18vw; 
-    }
-
-    h1 {
-        font-size: 10vw; 
+        touch-action: manipulation; 
     }
 }
 
 /* LANDSCAPE MODUS SPECIFIEKE AANPASSINGEN */
-/* De hoogte is de beperkende factor in landscape */
 @media (orientation: landscape) and (max-height: 500px) {
     
     h1 {
-        font-size: 5vh; /* Gebruik hoogte-eenheden */
+        font-size: 5vh; 
     }
 
     .fireball {
-        width: 8vh; /* Gebruik hoogte-eenheden */
+        width: 8vh; 
         height: 8vh; 
     }
     
-    /* Maak knoppen kleiner in landscape */
     #touch-controls button {
          font-size: 1.5em;
          padding: 8px 14px;
