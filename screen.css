@@ -1,3 +1,29 @@
+/* ==========================================================
+   Basale Elementen: Zorgen voor Volledige Viewport Dekking
+   ========================================================== */
+
+/* * CRUCIAAL voor responsiviteit: */
+html, body {
+	height: 100vh; /* Gebruik vh (viewport height) */
+	width: 100vw;  /* Gebruik vw (viewport width) */
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	overflow: hidden; /* Voorkomt scrollen */
+}
+
+body {
+	background-color: #000000;
+	background-image: url('images/background.png');
+	background-size: cover; /* Laat de achtergrond de hele ruimte bedekken */
+	background-position: 0 center;
+	background-repeat: repeat-x;
+}
+
+/* ==========================================================
+   Animaties & Game Elementen
+   ========================================================== */
+
 @keyframes fireball {
 	0% {
 		transform: rotate(0);
@@ -5,19 +31,6 @@
 	100% {
 		transform: rotate(360deg);
 	}
-}
-
-body {
-	background-color: #000000;
-	background-image: url('images/background.png');
-	background-position: 0 center;
-	background-repeat: repeat-x;
-	box-sizing: border-box;
-	height: 100%;
-	margin: 0;
-	overflow: hidden;
-	padding: 0;
-	width: 100%;
 }
 
 .fireball {
@@ -29,22 +42,108 @@ body {
 	background-image: url('images/fireball.gif');
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
+	
+	/* Relatieve grootte voor responsiviteit */
+	width: 10vw; 
+	height: 10vw; 
 }
 
 h1 {
-	align-items: center;
+	/* Centreren van de tekst */
+	height: 100vh; 
+	width: 100vw;
 	display: flex;
-	font-family: sans-serif;
+	align-items: center;
 	justify-content: center;
-	height: 100%;
+	
+	font-family: sans-serif;
+	color: white; 
+	font-size: 8vw; /* Relatieve lettergrootte */
 	margin: 0;
-}
-
-html {
-	height: 100%;
-	width: 100%;
 }
 
 .tube {
 	background-repeat: no-repeat, repeat-y;
+	width: 15vw; /* Relatieve breedte */
+}
+
+/* ==========================================================
+   Touch Controls Stijlen (Desktop verstoppen)
+   ========================================================== */
+
+#touch-controls {
+    /* Standaard verstoppen voor desktopgebruikers */
+    display: none; 
+}
+
+
+/* ==========================================================
+   MEDIA QUERIES: Optimalisatie voor Mobiel (max-width: 768px)
+   ========================================================== */
+@media (max-width: 768px) {
+    
+    /* 1. Touch Controls Laten Zien en Positioneren */
+    #touch-controls {
+        display: flex; /* Laten zien op mobiel */
+        position: fixed; /* Bovenop de game-area */
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        z-index: 100; 
+        justify-content: space-between;
+        padding: 10px;
+    }
+
+    #touch-controls button {
+        /* Stijl de knoppen voor goede touch-doelwitten */
+        font-size: 1.8em;
+        padding: 10px 18px;
+        background-color: rgba(50, 50, 50, 0.7); /* Semi-transparant */
+        color: white;
+        border: 2px solid white;
+        border-radius: 8px;
+        cursor: pointer;
+        -webkit-user-select: none;
+        user-select: none;
+        touch-action: manipulation; /* Verbeterd touch-gedrag */
+    }
+
+    /* 2. Game Elementen Schalen op Mobiel */
+    .fireball {
+        width: 12vw; 
+        height: 12vw; 
+    }
+    
+    .tube {
+        width: 18vw; 
+    }
+
+    h1 {
+        font-size: 10vw; 
+    }
+}
+
+/* LANDSCAPE MODUS SPECIFIEKE AANPASSINGEN */
+/* De hoogte is de beperkende factor in landscape */
+@media (orientation: landscape) and (max-height: 500px) {
+    
+    h1 {
+        font-size: 5vh; /* Gebruik hoogte-eenheden */
+    }
+
+    .fireball {
+        width: 8vh; /* Gebruik hoogte-eenheden */
+        height: 8vh; 
+    }
+    
+    /* Maak knoppen kleiner in landscape */
+    #touch-controls button {
+         font-size: 1.5em;
+         padding: 8px 14px;
+    }
+    #touch-controls {
+         bottom: 5px;
+         left: 5px;
+         right: 5px;
+    }
 }
