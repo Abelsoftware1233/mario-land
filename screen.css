@@ -19,7 +19,7 @@ html, body {
     font-family: sans-serif;
 }
 
-/* Body: Zwarte achtergrond en centrering */
+/* Body: Zwarte achtergrond en centrering van de game-container */
 body {
 	background-color: #000000; 
 	position: relative;
@@ -28,13 +28,13 @@ body {
     align-items: center; 
 }
 
-/* De Game Container: Houdt de exacte verhouding van de achtergrond aan */
+/* De Game Container: Houdt de exacte verhouding van 800x437 aan */
 .game-container {
     /* De container schaalt mee met de viewport, maar wordt niet te groot */
     max-width: 100vw; 
     max-height: 100vh; 
     
-    /* Correcte aspect ratio voor 800x437 */
+    /* CRUCIAAL: Correcte aspect ratio (437 / 800 * 100 = 54.625%) */
     width: 100%; 
     padding-bottom: 54.625%; 
     height: auto; 
@@ -42,14 +42,11 @@ body {
     position: relative; 
     overflow: hidden; 
 
-    /* De achtergrondafbeelding vult de container */
+    /* De achtergrondafbeelding */
     background-image: url('images/background.png');
     background-size: cover; 
-    background-position: left bottom; 
-    background-repeat: no-repeat;
-    
-    /* Optioneel: border voor debugging */
-    /* border: 1px solid red; */
+    background-position: left bottom; /* STARTPUNT voor JavaScript scroll */
+    background-repeat: no-repeat; 
 }
 
 /* Stijlen voor de fireball (Mario) */
@@ -69,10 +66,10 @@ body {
     /* Positionering t.o.v. .game-container */
 	position: absolute; 
 	
-	/* Aangepaste bottom, pas aan indien Mario niet perfect op de grond staat. */
+	/* BOTTOM: Aangepast op basis van 800x437 om Mario op de grond te plaatsen */
 	bottom: 9%; 
 	
-    /* Mario start links op het scherm */
+	/* Mario start links op het scherm */
 	left: 20%;   
 	transform: translateX(-50%); 
 	
@@ -81,35 +78,21 @@ body {
 	height: 12%; 
 }
 
-/* Stijlen voor de h1 (Loading tekst) - deze staat nu OP DE BODY, niet in de game-container */
+/* Stijlen voor de h1 (Loading tekst) - staat boven alles bij de start */
 #loadingText {
-	display: flex; /* Zorgt ervoor dat de tekst gecentreerd kan worden */
-    justify-content: center; /* Horizontaal centreren */
-    align-items: center; /* Verticaal centreren */
+	display: flex; 
+    justify-content: center; 
+    align-items: center; 
 	font-family: sans-serif;
 	color: white; 
-	position: absolute; /* Absolute positie over het hele scherm */
+	position: absolute; 
 	top: 0;
 	left: 0;
 	width: 100%;
-    height: 100%; /* Vult de hele viewport */
-	z-index: 100; /* Zorgt ervoor dat het boven alles ligt */
-    background-color: #000; /* Volledig zwarte achtergrond voor de loading screen */
-    font-size: 5vmin; /* Schaal de tekst mee */
-}
-
-/* Stijlen voor tube (voorbeeld) */
-/* Je JavaScript zal waarschijnlijk individuele buis-elementen creëren en ze deze class geven */
-.tube {
-    position: absolute;
-    bottom: 0; /* Zorgt ervoor dat de buizen op de grond staan */
-    width: 5%; /* Voorbeeld breedte relatief aan game-container */
-    height: 30%; /* Voorbeeld hoogte relatief aan game-container */
-    background-color: green; /* Voorbeeld kleur. Gebruik liever een afbeelding. */
-    /* background-image: url('images/tube.png'); */
-    /* background-size: contain; */
-    /* background-repeat: no-repeat; */
-    /* Verder positionering door JS (left property) */
+    height: 100%; 
+	z-index: 100; 
+    background-color: #000; /* Zwarte achtergrond voor het laadscherm */
+    font-size: 5vmin; 
 }
 
 /* Utility class om elementen te verbergen */
