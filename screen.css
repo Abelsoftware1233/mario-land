@@ -14,7 +14,7 @@ html, body {
 	width: 100%;
 	margin: 0;
 	padding: 0;
-	overflow: hidden; 
+	overflow: hidden; /* Voorkomt scrollbalken */
 	box-sizing: border-box; 
 }
 
@@ -23,10 +23,15 @@ body {
 	background-color: #000000; /* Zwarte randen op bredere schermen */
 	background-image: url('images/background.png'); /* Je achtergrondafbeelding */
 	
-	/* BELANGRIJK: Zorgt ervoor dat de afbeelding schaalt om te passen 
-	   (contain) en niet te breed wordt, met zwarte zijkanten op PC-schermen. */
+	/* BELANGRIJK: We gebruiken 'initial' of laten deze property weg in CSS, 
+	   omdat we de positionering via JavaScript gaan doen.
+	   De 'contain' zorgt ervoor dat de afbeelding schaalt zoals besproken,
+	   maar niet de breedte van een pc-scherm vult. */
 	background-size: contain; 
-	background-position: center bottom; /* Centreert horizontaal, plaatst de onderkant van de afbeelding op de onderkant van de body */
+	
+	/* De startpositie van de achtergrond: links onderin */
+	background-position: left bottom; 
+	
 	background-repeat: no-repeat; 
 	position: relative; 
 }
@@ -44,14 +49,11 @@ body {
 	
 	position: absolute; 
 	
-	/* De 10% bottom-waarde plaatst de fireball op de 'grond'. Pas dit aan 
-	   (bijv. 8% of 12%) om perfect op de lijn van jouw specifieke PNG te staan. */
-	bottom: 10%; 
+	/* Positionering van de fireball: links-midden op de grond */
+	bottom: 10%; /* Pas aan voor perfecte grondlijn */
+	left: 20%;   /* Mario start meer naar links */
+	transform: translateX(-50%); /* Corrigeert de horizontale centrering */
 	
-	left: 50%; 
-	transform: translateX(-50%); 
-	
-	/* Grootte van de fireball, gebaseerd op de schermhoogte voor responsiviteit */
 	width: 10vh; 
 	height: 10vh; 
 }
@@ -65,6 +67,11 @@ h1 {
 	height: 100%;
 	margin: 0;
 	color: white; 
+	position: absolute; /* Zodat de h1 niet de layout van andere elementen beïnvloedt */
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 10; /* Zorgt ervoor dat de h1 boven andere elementen is */
 }
 
 /* Stijlen voor tube (indien gebruikt in je JavaScript) */
@@ -84,7 +91,7 @@ h1 {
     .fireball {
         width: 12vw; 
         height: 12vw;
-        bottom: 8%; /* Fijn afstellen voor mobiel */
+        bottom: 8%; 
     }
 }
 
@@ -98,6 +105,6 @@ h1 {
     .fireball {
         width: 8vh; 
         height: 8vh; 
-        bottom: 5%; /* Fijn afstellen voor landscape */
+        bottom: 5%; 
     }
 }
